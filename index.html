@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Magellan - Semantic Search for Websites</title>
+    <style>
+      :root {
+        --primary: #6366f1; /* Vibrant indigo */
+        --primary-dark: #4f46e5; /* Deep indigo */
+        --error: #ef4444; /* Bright red */
+        --error-bg: rgba(239, 68, 68, 0.1);
+        --success: #10b981; /* Emerald green */
+        --success-bg: rgba(16, 185, 129, 0.1);
+        --warning: #f59e0b; /* Amber */
+        --warning-bg: rgba(245, 158, 11, 0.1);
+        --bg-dark: #ffffff; /* White background */
+        --bg-light: #f3f4f6; /* Light gray */
+        --text-primary: #1f2937; /* Dark gray for primary text */
+        --text-secondary: #4b5563; /* Medium gray for secondary text */
+        --border-color: #e5e7eb; /* Light gray for borders */
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--text-primary);
+        line-height: 1.6;
+        font-size: 16px;
+        overflow-x: hidden; /* Prevent horizontal scroll */
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header & Navigation */
+      header {
+        background-color: var(--bg-dark); /* Slightly darker or same as body */
+        padding: 15px 0; /* Adjusted padding */
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        font-size: 1.5em; /* Adjust if needed */
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+      .logo img {
+        height: 40px; /* Adjust size as needed */
+        margin-right: 10px;
+      }
+      .logo span {
+        /* Optional: if you want to add text next to logo */
+        color: var(--primary);
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        align-items: center; /* Vertically align nav items with button */
+      }
+
+      nav ul li {
+        margin-left: 25px;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: var(--text-secondary);
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      nav ul li a:hover,
+      nav ul li a.active {
+        color: var(--primary);
+      }
+
+      .cta-button-nav {
+        background-color: var(--primary);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        margin-left: 25px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .cta-button-nav:hover {
+        background-color: var(--primary-dark);
+      }
+
+      .chrome-logo {
+        width: 20px;
+        height: 20px;
+      }
+
+      /* Hero Section */
+      .hero {
+        padding: 100px 0;
+        text-align: center;
+        background: linear-gradient(
+          180deg,
+          var(--bg-dark) 0%,
+          var(--bg-light) 100%
+        );
+      }
+
+      .hero h1 {
+        font-size: 3.2em;
+        margin-bottom: 20px;
+        color: var(--text-primary);
+        line-height: 1.2;
+        animation: fadeInUp 0.8s ease-out;
+      }
+      .hero h1 .highlight {
+        color: var(--primary);
+      }
+
+      .hero p.subtitle {
+        font-size: 1.3em;
+        color: var(--text-secondary);
+        max-width: 750px;
+        margin: 0 auto 30px auto;
+        animation: fadeInUp 0.8s ease-out 0.2s backwards;
+      }
+
+      .hero-cta-button {
+        background-color: var(--primary);
+        color: white;
+        padding: 15px 35px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 1.1em;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        animation: fadeInUp 0.8s ease-out 0.4s backwards;
+      }
+
+      .hero-cta-button:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+      }
+
+      .hero-screenshot-placeholder {
+        width: 80%;
+        max-width: 900px;
+        margin: 50px auto 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+        animation: scaleIn 1s ease-out 0.6s backwards;
+        transition: transform 0.3s ease;
+      }
+
+      .hero-screenshot-placeholder:hover {
+        transform: scale(1.02);
+      }
+
+      .hero-screenshot-placeholder img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 12px;
+      }
+
+      /* Features Section */
+      .features {
+        padding: 80px 0;
+        background-color: var(--bg-dark);
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 15px;
+        color: var(--text-primary);
+      }
+      .section-title .highlight {
+        color: var(--primary);
+      }
+      .section-subtitle {
+        text-align: center;
+        font-size: 1.1em;
+        color: var(--text-secondary);
+        margin-bottom: 60px;
+        max-width: 700px; /* Increased max-width */
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .feature-card {
+        background-color: var(--bg-light);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid var(--border-color);
+        display: flex; /* For aligning icon and text */
+        flex-direction: column; /* Stack icon above text */
+        animation: fadeInUp 0.8s ease-out backwards;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .feature-icon {
+        font-size: 1.5em; /* Adjusted for SVG icons */
+        color: var(--primary);
+        margin-bottom: 20px;
+        width: 60px; /* Container for icon */
+        height: 60px;
+        background-color: rgba(99, 102, 241, 0.1); /* Lighter primary bg */
+        border-radius: 12px; /* Rounded square */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-self: flex-start; /* Align icon to the start of the card */
+      }
+      .feature-icon svg {
+        width: 28px; /* Size of SVG */
+        height: 28px;
+        fill: var(--primary);
+      }
+
+      .feature-card h3 {
+        font-size: 1.4em; /* Adjusted size */
+        margin-bottom: 10px;
+        color: var(--text-primary);
+      }
+
+      .feature-card p {
+        color: var(--text-secondary);
+        font-size: 0.95em;
+        flex-grow: 1; /* Allows paragraph to take remaining space if cards have varying text length */
+      }
+
+      /* How It Works Section */
+      .how-it-works {
+        padding: 80px 0;
+        background-color: var(--bg-light);
+      }
+
+      .steps-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        gap: 30px;
+        margin-top: 50px;
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+      }
+
+      .step {
+        flex: 1;
+        min-width: 250px; /* Ensure steps don't get too narrow */
+        text-align: center;
+        padding: 20px;
+      }
+
+      .step-number {
+        width: 50px;
+        height: 50px;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5em;
+        font-weight: 700;
+        margin: 0 auto 20px auto;
+        box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+        animation: scaleIn 0.8s ease-out backwards;
+      }
+
+      .step h4 {
+        font-size: 1.3em;
+        margin-bottom: 10px;
+        color: var(--text-primary);
+      }
+
+      .step p {
+        color: var(--text-secondary);
+        font-size: 0.95em;
+      }
+
+      /* Visual Showcase / More Screenshots */
+      .showcase {
+        padding: 80px 0;
+        background-color: var(--bg-dark);
+      }
+
+      .showcase-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .screenshot-item {
+        background-color: var(--bg-light);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .screenshot-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .screenshot-placeholder {
+        width: 100%;
+        aspect-ratio: 4/3;
+        background-color: var(--bg-light);
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px 12px 0 0;
+      }
+
+      .screenshot-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        transition: transform 0.3s ease;
+        padding: 10px;
+        border-radius: 8px;
+      }
+
+      .screenshot-item:hover .screenshot-placeholder img {
+        transform: scale(1.02);
+      }
+
+      .screenshot-caption {
+        padding: 20px;
+        color: var(--text-secondary);
+        font-size: 0.95em;
+        text-align: left;
+        background-color: white;
+        border-top: 1px solid var(--border-color);
+        border-radius: 0 0 12px 12px;
+      }
+
+      .screenshot-caption strong {
+        color: var(--text-primary);
+        display: block;
+        margin-bottom: 8px;
+        font-size: 1.1em;
+      }
+
+      /* Testimonials Section (Optional) */
+      .testimonials {
+        padding: 80px 0;
+        background-color: var(--bg-light);
+      }
+
+      .testimonial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .testimonial-card {
+        background-color: var(--bg-dark);
+        padding: 30px;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .testimonial-card blockquote {
+        font-style: italic;
+        color: var(--text-secondary);
+        margin-bottom: 15px;
+        position: relative;
+        padding-left: 20px;
+      }
+      .testimonial-card blockquote::before {
+        content: "“";
+        position: absolute;
+        left: -5px;
+        top: -10px;
+        font-size: 3em;
+        color: var(--primary);
+        opacity: 0.5;
+      }
+
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+      }
+
+      .author-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--primary); /* Placeholder */
+        margin-right: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--text-primary);
+        font-weight: bold;
+      }
+
+      .author-info h5 {
+        color: var(--text-primary);
+        font-size: 1.1em;
+        margin: 0;
+      }
+      .author-info p {
+        color: var(--text-secondary);
+        font-size: 0.9em;
+        margin: 0;
+      }
+
+      /* Call to Action (Final) */
+      .final-cta {
+        padding: 80px 0;
+        text-align: center;
+        background: linear-gradient(
+          0deg,
+          var(--bg-dark) 0%,
+          var(--bg-light) 100%
+        );
+      }
+
+      .final-cta h2 {
+        font-size: 2.8em;
+        margin-bottom: 20px;
+        color: var(--text-primary);
+      }
+      .final-cta h2 .highlight {
+        color: var(--primary);
+      }
+
+      .final-cta p {
+        font-size: 1.2em;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto 30px auto;
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--bg-dark);
+        color: var(--text-secondary);
+        text-align: center;
+        padding: 40px 0;
+        border-top: 1px solid var(--border-color);
+      }
+
+      footer p {
+        margin-bottom: 10px;
+      }
+
+      .footer-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        margin: 0 10px;
+        transition: color 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--primary);
+      }
+
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5em;
+        }
+        .hero p.subtitle {
+          font-size: 1.1em;
+        }
+        .hero-screenshot-placeholder {
+          height: 300px; /* Adjust for smaller screens */
+        }
+        nav {
+          flex-direction: column;
+          align-items: center;
+        }
+        .logo {
+          /* Center logo when stacked */
+          margin-bottom: 10px;
+        }
+        nav ul {
+          margin-top: 15px;
+          padding-left: 0;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        nav ul li {
+          margin: 5px 10px;
+        }
+        .cta-button-nav {
+          margin-top: 15px;
+          margin-left: 0;
+        }
+        .section-title {
+          font-size: 2em;
+        }
+        .steps-container {
+          flex-direction: column;
+          align-items: center;
+        }
+        .step {
+          max-width: 350px; /* Limit width of steps on mobile */
+        }
+        .features-grid {
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero h1 {
+          font-size: 2em;
+        }
+        .hero p.subtitle {
+          font-size: 1em;
+        }
+        .hero-cta-button {
+          padding: 12px 25px;
+          font-size: 1em;
+        }
+        .features-grid {
+          grid-template-columns: 1fr; /* Single column on very small screens */
+        }
+        .showcase-gallery {
+          grid-template-columns: 1fr;
+        }
+        .testimonial-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Add keyframes for animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* Update navigation animation */
+      nav ul li a {
+        position: relative;
+        transition: color 0.3s ease;
+      }
+
+      nav ul li a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -4px;
+        left: 0;
+        background-color: var(--primary);
+        transition: width 0.3s ease;
+      }
+
+      nav ul li a:hover::after {
+        width: 100%;
+      }
+
+      /* Update step numbers animation */
+      .step:nth-child(1) .step-number {
+        animation-delay: 0.1s;
+      }
+      .step:nth-child(2) .step-number {
+        animation-delay: 0.2s;
+      }
+      .step:nth-child(3) .step-number {
+        animation-delay: 0.3s;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="container">
+        <a href="#" class="logo">
+          <img src="./public/logo.png" alt="Magellan Logo" />
+          Magellan
+        </a>
+        <ul>
+          <li><a href="#features" class="active">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#showcase">Showcase</a></li>
+        </ul>
+        <a
+          href="YOUR_CHROME_STORE_LINK_HERE"
+          target="_blank"
+          class="cta-button-nav"
+          ><img
+            src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg"
+            alt="Chrome Logo"
+            class="chrome-logo"
+          />Add to Chrome</a
+        >
+      </nav>
+    </header>
+
+    <main>
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="container">
+          <h1>
+            Tired of Ctrl+F Fails? <span class="highlight">Meet Magellan.</span>
+          </h1>
+          <p class="subtitle">
+            Your intelligent page navigator, powered by semantic search.
+            Magellan helps you actually find what you mean, not just what you
+            typed.
+          </p>
+          <a
+            href="YOUR_CHROME_STORE_LINK_HERE"
+            target="_blank"
+            class="hero-cta-button"
+            ><img
+              src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg"
+              alt="Chrome Logo"
+              class="chrome-logo"
+            />Install Magellan for Free</a
+          >
+          <div class="hero-screenshot-placeholder">
+            <img src="./public/ss.png" alt="Magellan Screenshot" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section id="features" class="features">
+        <div class="container">
+          <h2 class="section-title">
+            What makes <span class="highlight">Magellan</span> magical? 🔍
+          </h2>
+          <p class="section-subtitle">
+            Whether you're skimming long articles, sifting through
+            documentation, or doing deep research, Magellan helps you search
+            faster and think clearer.
+          </p>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <!-- Icon: Brainy Search -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM11 18C14.866 18 18 14.866 18 11C18 7.13401 14.866 4 11 4C7.13401 4 4 7.13401 4 11C4 14.866 7.13401 18 11 18Z"
+                  ></path>
+                  <path
+                    d="M12 12C11.6491 12.6916 10.9229 13.1183 10.1294 13.165L10 13.1667C8.89543 13.1667 8 12.2712 8 11.1667C8 10.0621 8.89543 9.16666 10 9.16666C10.4877 9.16666 10.9387 9.34579 11.2839 9.6437L12.4123 7.98503C12.5734 8.17862 12.7035 8.39584 12.7983 8.62871L11.2839 9.6437C11.6491 10.3084 11.5 11.5 12 12Z"
+                  ></path>
+                </svg>
+                <!-- Generic Search/AI icon -->
+              </div>
+              <h3>Semantic Search</h3>
+              <p>
+                Go beyond exact word matches. Magellan understands the meaning
+                behind your query and searches accordingly.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <!-- Icon: Tabs with Memory -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M20 4H4C2.89543 4 2 4.89543 2 6V18C2 19.1046 2.89543 20 4 20H20C21.1046 20 22 19.1046 22 18V6C22 4.89543 21.1046 4 20 4ZM6 6H18V8H6V6ZM4 18V10H7V12H9V10H11V12H13V10H15V12H17V10H20V18H4Z"
+                  ></path>
+                </svg>
+                <!-- Generic Tabs icon -->
+              </div>
+              <h3>Context-aware Tabs</h3>
+              <p>
+                Each tab keeps its own memory of content, so you get precise
+                results no matter how many pages you're juggling.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <!-- Icon: Target/Score -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4ZM12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6ZM12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8Z"
+                  ></path>
+                </svg>
+                <!-- Generic Target icon -->
+              </div>
+              <h3>Similarity Scores</h3>
+              <p>Instantly see how closely results match your intent.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <!-- Icon: Highlighter -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M20.7071 2.29289C20.3166 1.90237 19.6834 1.90237 19.2929 2.29289L18 3.58579L14.5 0.0857864L2.08579 12.5L11.5 21.9142L23.9142 9.5L20.4142 6L21.7071 4.70711C22.0976 4.31658 22.0976 3.68342 21.7071 3.29289L20.7071 2.29289ZM13.0858 3.5L17.2929 7.70711L19 6L13.0858 0.0857864V3.5ZM4.5 13.9142L10.0858 19.5L19.5 10.0858L13.9142 4.5L4.5 13.9142Z"
+                  ></path>
+                  <rect
+                    x="4"
+                    y="16"
+                    width="12"
+                    height="2"
+                    rx="1"
+                    transform="rotate(-45 10 17)"
+                  ></rect>
+                </svg>
+              </div>
+              <h3>Smart Highlighting</h3>
+              <p>
+                Highlights all relevant sections so you can scan less and read
+                smarter.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <!-- Icon: Arrows/Navigation -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M12 2C13.1046 2 14 2.89543 14 4V11.5858L16.2929 9.29289C16.6834 8.90237 17.3166 8.90237 17.7071 9.29289C18.0976 9.68342 18.0976 10.3166 17.7071 10.7071L13.4142 15H10.5858L6.29289 10.7071C5.90237 10.3166 5.90237 9.68342 6.29289 9.29289C6.68342 8.90237 7.31658 8.90237 7.70711 9.29289L10 11.5858V4C10 2.89543 10.8954 2 12 2ZM12 17C10.8954 17 10 17.8954 10 19V20H14V19C14 17.8954 13.1046 17 12 17Z"
+                  ></path>
+                </svg>
+              </div>
+              <h3>Seamless Navigation</h3>
+              <p>
+                Jump to results effortlessly with smooth scrolling and intuitive
+                controls.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <!-- Icon: Clean Window/Layout -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM4 5V19H20V5H4ZM6 7H18V9H6V7ZM6 11H14V13H6V11Z"
+                  ></path>
+                </svg>
+              </div>
+              <h3>Sleek UI</h3>
+              <p>
+                Clean, minimal interface that blends perfectly with your
+                workflow.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- How It Works Section -->
+      <section id="how-it-works" class="how-it-works">
+        <div class="container">
+          <h2 class="section-title">Get Started in Seconds</h2>
+          <p class="section-subtitle">
+            Using Magellan is incredibly simple. Follow these easy steps to
+            transform your browsing experience.
+          </p>
+          <div class="steps-container">
+            <div class="step">
+              <div class="step-number">1</div>
+              <h4>Install Extension</h4>
+              <p>
+                Click the "Add to Browser" button and install Magellan from the
+                Chrome Web Store.
+              </p>
+            </div>
+            <div class="step">
+              <div class="step-number">2</div>
+              <h4>Search Intelligently</h4>
+              <p>
+                Open Magellan on any webpage and type what you're looking for.
+                Think concepts, not just keywords!
+              </p>
+            </div>
+            <div class="step">
+              <div class="step-number">3</div>
+              <h4>Navigate with Ease</h4>
+              <p>
+                Magellan shows you relevant sections with similarity scores.
+                Click to jump, and enjoy smarter browsing!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Visual Showcase Section -->
+      <section id="showcase" class="showcase">
+        <div class="container">
+          <h2 class="section-title">See Magellan In Action</h2>
+          <p class="section-subtitle">
+            A glimpse into how Magellan looks and feels. Clean, intuitive, and
+            powerful.
+          </p>
+          <div class="showcase-gallery">
+            <div class="screenshot-item">
+              <div class="screenshot-placeholder">
+                <img src="./public/search.png" />
+              </div>
+              <div class="screenshot-caption">
+                <strong>Intelligent Search Bar</strong>Find what you mean with
+                semantic understanding.
+              </div>
+            </div>
+            <div class="screenshot-item">
+              <div class="screenshot-placeholder">
+                <img src="./public/highlights.png" />
+              </div>
+              <div class="screenshot-caption">
+                <strong>Clear, Scored Results</strong>Instantly see relevance
+                and highlighted sections.
+              </div>
+            </div>
+            <div class="screenshot-item">
+              <div class="screenshot-placeholder">
+                <img src="./public/ranking.png" />
+              </div>
+              <div class="screenshot-caption">
+                <strong>Effortless Navigation</strong>Jump directly to the
+                information you need.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final Call to Action Section -->
+      <section class="final-cta">
+        <div class="container">
+          <h2>
+            Rediscover the web with
+            <span class="highlight">smarter search!</span> 🌟
+          </h2>
+          <p>
+            Stop wasting time with frustrating searches. Install Magellan now
+            and find what you mean, effortlessly.
+          </p>
+          <a
+            href="YOUR_CHROME_STORE_LINK_HERE"
+            target="_blank"
+            class="hero-cta-button"
+            ><img
+              src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg"
+              alt="Chrome Logo"
+              class="chrome-logo"
+            />Install Magellan Now!</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>© 2025 Magellan. All rights reserved.</p>
+        <!-- Updated -->
+        <div class="footer-links">
+          <a href="http://kpulgari.com/magellan/privacy-policy"
+            >Privacy Policy</a
+          >
+          <!-- <a href="#">Terms of Service</a> -->
+          <a href="mailto:magellan.extension@gmail.com">Contact Support</a>
+          <!-- Placeholder email -->
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
