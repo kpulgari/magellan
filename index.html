@@ -178,30 +178,30 @@
 
       /* Hamburger Menu Button */
       .hamburger-menu {
-        display: none; /* Hidden by default, shown in media query */
+        display: none;
         background: none;
         border: none;
         cursor: pointer;
-        padding: 0; /* Removed padding, using explicit size */
-        width: 40px; /* Explicit width */
-        height: 40px; /* Explicit height */
+        padding: 0;
+        width: 40px;
+        height: 40px;
         z-index: 1001;
-        /* Flex properties for centering icons will be in media query */
+        position: relative;
       }
 
       .hamburger-icon {
         display: block;
-        width: 25px;
-        height: 3px;
+        width: 22px;
+        height: 2px;
         background-color: var(--text-primary);
-        margin: 4px 0; /* Adjusted margin for better spacing in 40x40 button */
+        margin: 4px auto;
         transition: all 0.3s ease-in-out;
         border-radius: 1px;
       }
 
       /* Hero Section */
       .hero {
-        padding: 80px 0 60px; /* Adjusted padding slightly */
+        padding: 80px 0 60px;
         text-align: center;
         background: linear-gradient(
           180deg,
@@ -225,15 +225,13 @@
         font-size: 1.3em;
         color: var(--text-secondary);
         max-width: 750px;
-        margin: 0 auto 35px auto; /* Increased bottom margin */
+        margin: 0 auto 35px auto;
         animation: fadeInUp 0.8s ease-out 0.2s backwards;
       }
 
-      /* Removed .hero-cta-button as badge is primary CTA */
-
       .chrome-store-badge-container {
-        margin-top: 20px; /* Spacing from text above */
-        margin-bottom: 20px; /* Spacing before screenshot */
+        margin-top: 20px;
+        margin-bottom: 20px;
         text-align: center;
       }
 
@@ -241,10 +239,10 @@
         display: block;
         margin: 0 auto;
         width: 100%;
-        max-width: 206px; /* Standard Chrome Web Store badge width */
+        max-width: 206px;
         height: auto;
         transition: transform 0.2s ease-in-out;
-        animation: fadeInUp 0.8s ease-out 0.3s backwards; /* Added animation with slight delay */
+        animation: fadeInUp 0.8s ease-out 0.3s backwards;
       }
       .chrome-store-badge-img:hover {
         transform: scale(1.03);
@@ -253,7 +251,7 @@
       .hero-screenshot-placeholder {
         width: 100%;
         max-width: 900px;
-        margin: 40px auto 0; /* Adjusted top margin */
+        margin: 40px auto 0;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
@@ -557,9 +555,8 @@
         font-size: 1.2em;
         color: var(--text-secondary);
         max-width: 600px;
-        margin: 0 auto 35px auto; /* Increased bottom margin */
+        margin: 0 auto 35px auto;
       }
-      /* Removed final .hero-cta-button, badge is primary CTA */
 
       /* Footer */
       footer {
@@ -607,23 +604,30 @@
         }
 
         .hamburger-menu {
-          display: flex; /* Show hamburger */
+          display: flex;
           flex-direction: column;
-          align-items: center; /* Center icon bars horizontally */
-          justify-content: center; /* Center icon bars vertically */
+          align-items: center;
+          justify-content: center;
         }
+
         .hamburger-menu.active .hamburger-icon:nth-child(1) {
-          transform: translateY(7px) rotate(45deg); /* Adjusted for new 4px margin */
+          transform: translateY(10px) rotate(45deg);
+          transform-origin: center;
+          width: 25px;
         }
+
         .hamburger-menu.active .hamburger-icon:nth-child(2) {
           opacity: 0;
         }
+
         .hamburger-menu.active .hamburger-icon:nth-child(3) {
-          transform: translateY(-7px) rotate(-45deg); /* Adjusted for new 4px margin */
+          transform: translateY(-10px) rotate(-45deg);
+          transform-origin: center;
+          width: 25px;
         }
 
         .nav-menu {
-          display: none; /* Hidden by default */
+          display: none;
           flex-direction: column;
           align-items: center;
           position: absolute;
@@ -638,7 +642,7 @@
         }
 
         .nav-menu.nav-open {
-          display: flex; /* Show when open */
+          display: flex;
         }
 
         .nav-menu ul {
@@ -650,7 +654,7 @@
         }
 
         .nav-menu ul li {
-          margin: 15px 0;
+          margin: 5px 0;
           margin-left: 0;
         }
         .nav-menu ul li a {
@@ -658,7 +662,7 @@
         }
 
         .nav-menu .cta-button-nav {
-          margin-top: 25px;
+          margin-top: 10px;
           margin-left: 0;
           padding: 12px 25px;
         }
@@ -689,7 +693,6 @@
           width: 95%;
           margin: 20px auto 0;
         }
-        /* .hero-cta-button { Removed this rule as button is removed } */
 
         .features-grid {
           grid-template-columns: 1fr;
@@ -701,7 +704,7 @@
           grid-template-columns: 1fr;
         }
         .chrome-store-badge-img {
-          max-width: 180px; /* Slightly smaller on mobile */
+          max-width: 180px;
         }
       }
 
@@ -783,7 +786,6 @@
             class="cta-button-nav"
             >Add to Chrome</a
           >
-          <!-- Text only CTA in nav, as per your last provided HTML -->
         </div>
       </nav>
     </header>
@@ -800,7 +802,6 @@
             Magellan helps you actually find what you mean, not just what you
             typed.
           </p>
-          <!-- Removed hero-cta-button. Badge is now the primary CTA -->
           <div class="chrome-store-badge-container">
             <a
               href="https://kpulgari.com/magellan/"
@@ -1091,10 +1092,8 @@
 
             if (isOpen) {
               hamburgerButton.setAttribute("aria-label", "Close navigation");
-              document.body.style.overflow = "hidden";
             } else {
               hamburgerButton.setAttribute("aria-label", "Open navigation");
-              document.body.style.overflow = "";
             }
           });
 
@@ -1105,7 +1104,6 @@
                 hamburgerButton.classList.remove("active");
                 hamburgerButton.setAttribute("aria-expanded", "false");
                 hamburgerButton.setAttribute("aria-label", "Open navigation");
-                document.body.style.overflow = "";
               }
             });
           });
