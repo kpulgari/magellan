@@ -300,6 +300,10 @@
         margin-top: 20px;
         margin-bottom: 20px;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
       }
 
       .chrome-store-badge-img {
@@ -312,7 +316,18 @@
         animation: fadeInUp 0.8s ease-out 0.3s backwards;
       }
 
-      .chrome-store-badge-img:hover {
+      .product-hunt-badge {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+        transition: transform 0.2s ease-in-out;
+        animation: fadeInUp 0.8s ease-out 0.4s backwards;
+      }
+
+      .chrome-store-badge-img:hover,
+      .product-hunt-badge:hover {
         transform: scale(1.03);
       }
 
@@ -1043,6 +1058,19 @@
                 src="./public/chrome.png"
                 alt="Available in the Chrome Web Store"
                 class="chrome-store-badge-img"
+              />
+            </a>
+            <a
+              href="https://www.producthunt.com/products/magellan-free-ai-webpage-search?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-magellan&#0045;free&#0045;ai&#0045;webpage&#0045;search"
+              target="_blank"
+              aria-label="Check out Magellan on Product Hunt"
+            >
+              <img
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=977166&theme=light&t=1749669226421"
+                alt="Magellan&#0032;–&#0032;Free&#0032;AI&#0032;Webpage&#0032;Search - Ask&#0032;AI&#0032;questions&#0032;about&#0032;any&#0032;webpage&#0032;and&#0032;get&#0032;instant&#0032;answers&#0046; | Product Hunt"
+                class="product-hunt-badge"
+                width="250"
+                height="54"
               />
             </a>
           </div>
