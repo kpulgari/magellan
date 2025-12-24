@@ -44,19 +44,35 @@
 
     <style>
       :root {
-        --primary: #6366f1;
-        --primary-dark: #4f46e5;
-        --error: #ef4444;
-        --error-bg: rgba(239, 68, 68, 0.1);
-        --success: #10b981;
-        --success-bg: rgba(16, 185, 129, 0.1);
-        --warning: #f59e0b;
-        --warning-bg: rgba(245, 158, 11, 0.1);
-        --bg-dark: #ffffff;
-        --bg-light: #fafafa;
-        --text-primary: #0a0a0a;
-        --text-secondary: #6b7280;
-        --border-color: #f0f0f0;
+        /* Core colors - darker, sexier theme */
+        --primary: #8b8bff;
+        --primary-hover: #6b6bff;
+        --success: #51cf66;
+        --error: #ff6b6b;
+        --warning: #ffd43b;
+        --border-radius: 8px;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        /* Theme variables - darker, sexier */
+        --bg-primary: #0f0f13;
+        --bg-secondary: #1a1a24;
+        --text-primary: #e8e8f0;
+        --text-secondary: #8b8b9e;
+        --border-color: rgba(255, 255, 255, 0.08);
+        --input-bg: #1a1a24;
+        --input-border: rgba(255, 255, 255, 0.08);
+        --input-focus-border: #8b8bff;
+        --input-focus-ring: rgba(139, 139, 255, 0.15);
+        --button-hover: #6b6bff;
+        --button-active: #5b5bff;
+        --link-color: #8b8bff;
+        --link-hover: #6b6bff;
+        --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+
+        /* Legacy compatibility */
+        --bg-dark: var(--bg-primary);
+        --bg-light: var(--bg-secondary);
+        --primary-dark: var(--primary-hover);
       }
 
       *,
@@ -67,15 +83,27 @@
         padding: 0;
       }
 
+      .highlight {
+        --highlight-color: hsl(248deg 84% 60%);
+        background-image: url(https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=8b8bff);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-blend-mode: multiply;
+        margin: -2px -6px;
+        padding: 2px 6px;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+      }
+
       body {
         font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
           Roboto, Helvetica, Arial, sans-serif;
-        background-color: var(--bg-dark);
+        background-color: var(--bg-primary);
         color: var(--text-primary);
         line-height: 1.7;
         font-size: 16px;
         overflow-x: hidden;
-        font-weight: 300;
+        font-weight: 400;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
@@ -87,8 +115,8 @@
       }
 
       header {
-        background-color: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(10px);
+        background-color: rgba(15, 15, 19, 0.8);
+        backdrop-filter: blur(20px);
         padding: 20px 0;
         position: sticky;
         top: 0;
@@ -147,22 +175,7 @@
 
       .nav-menu ul li a:hover,
       .nav-menu ul li a.active {
-        color: var(--primary);
-      }
-
-      .nav-menu ul li a::after {
-        content: "";
-        position: absolute;
-        width: 0;
-        height: 2px;
-        bottom: -4px;
-        left: 0;
-        background-color: var(--primary);
-        transition: width 0.3s ease;
-      }
-
-      .nav-menu ul li a:hover::after {
-        width: 100%;
+        color: var(--link-hover);
       }
 
       .nav-menu ul li a.github-link::after {
@@ -170,22 +183,44 @@
       }
 
       .nav-menu .cta-button-nav {
-        background-color: var(--primary);
-        color: white;
-        padding: 10px 24px;
+        background: transparent;
+        color: var(--text-primary);
+        padding: 8px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 400;
-        transition: all 0.3s ease;
+        font-weight: 500;
+        font-size: 0.95em;
+        transition: var(--transition);
         margin-left: 25px;
         display: flex;
         align-items: center;
         gap: 8px;
         letter-spacing: -0.01em;
+        border: 1px solid var(--border-color);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .nav-menu .cta-button-nav::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(139, 139, 255, 0.1);
+        opacity: 0;
+        transition: var(--transition);
+        z-index: -1;
       }
 
       .nav-menu .cta-button-nav:hover {
-        background-color: var(--primary-dark);
+        color: var(--text-primary);
+        border-color: rgba(139, 139, 255, 0.3);
+      }
+
+      .nav-menu .cta-button-nav:hover::before {
+        opacity: 1;
       }
 
       .hamburger-menu {
@@ -221,7 +256,7 @@
           right: -100%;
           width: 100%;
           height: 100vh;
-          background-color: var(--bg-dark);
+          background-color: var(--bg-primary);
           padding: 80px 20px 20px;
           transition: right 0.3s ease-in-out;
           flex-direction: column;
@@ -274,38 +309,42 @@
       }
 
       .hero {
-        padding: 100px 0 80px;
+        padding: 100px 0 120px;
         text-align: center;
-        background: linear-gradient(
-          180deg,
-          var(--bg-dark) 0%,
-          var(--bg-light) 100%
-        );
+        background-color: var(--bg-primary);
+        position: relative;
       }
 
       .hero h1 {
-        font-size: 3.5em;
-        margin-bottom: 24px;
+        font-size: 4em;
+        margin-bottom: 32px;
         color: var(--text-primary);
         line-height: 1.1;
         animation: fadeInUp 0.8s ease-out;
-        font-weight: 300;
-        letter-spacing: -0.03em;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        position: relative;
+        z-index: 1;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .hero h1 .highlight {
-        color: var(--primary);
+        color: var(--link-color);
       }
 
       .hero p.subtitle {
-        font-size: 1.25em;
+        font-size: 1.35em;
         color: var(--text-secondary);
-        max-width: 750px;
-        margin: 0 auto 40px auto;
+        max-width: 700px;
+        margin: 0 auto 48px auto;
         animation: fadeInUp 0.8s ease-out 0.2s backwards;
-        font-weight: 300;
-        letter-spacing: -0.01em;
-        line-height: 1.6;
+        font-weight: 400;
+        letter-spacing: -0.015em;
+        line-height: 1.7;
+        position: relative;
+        z-index: 1;
       }
 
       .chrome-store-badge-container {
@@ -330,22 +369,23 @@
 
       .hero-screenshot-placeholder {
         width: 100%;
-        max-width: 900px;
-        margin: 50px auto 0;
-        border-radius: 20px;
+        max-width: 1200px;
+        margin: 60px auto 0;
+        border-radius: 24px;
         overflow: hidden;
-        box-shadow: 0 20px 60px rgba(99, 102, 241, 0.15);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
+          0 0 0 1px var(--border-color);
         animation: scaleIn 1s ease-out 0.6s backwards,
           subtlePulse 3s ease-in-out infinite;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: var(--transition);
         position: relative;
         cursor: pointer;
         aspect-ratio: 16/9;
+        z-index: 1;
       }
 
       .hero-screenshot-placeholder:hover {
-        transform: translateY(-8px) scale(1.01);
-        box-shadow: 0 30px 70px rgba(99, 102, 241, 0.2);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--primary);
       }
 
       .hero-screenshot-placeholder::after {
@@ -357,8 +397,8 @@
         bottom: 0;
         background: linear-gradient(
           to bottom,
-          rgba(99, 102, 241, 0.1),
-          rgba(99, 102, 241, 0)
+          rgba(139, 139, 255, 0.1),
+          rgba(139, 139, 255, 0)
         );
         opacity: 0;
         transition: opacity 0.4s ease;
@@ -382,28 +422,26 @@
         display: block;
         border-radius: 20px;
         object-fit: contain;
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .hero-screenshot-placeholder:hover img {
-        transform: scale(1.02);
       }
 
       @keyframes subtlePulse {
         0% {
-          box-shadow: 0 20px 60px rgba(99, 102, 241, 0.15);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
+            0 0 0 1px var(--border-color);
         }
         50% {
-          box-shadow: 0 25px 70px rgba(99, 102, 241, 0.18);
+          box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45),
+            0 0 0 1px var(--border-color);
         }
         100% {
-          box-shadow: 0 20px 60px rgba(99, 102, 241, 0.15);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
+            0 0 0 1px var(--border-color);
         }
       }
 
       .features {
         padding: 100px 0;
-        background-color: var(--bg-dark);
+        background-color: var(--bg-primary);
       }
 
       .section-title {
@@ -411,13 +449,13 @@
         font-size: 2.75em;
         margin-bottom: 16px;
         color: var(--text-primary);
-        font-weight: 300;
+        font-weight: 600;
         letter-spacing: -0.02em;
         line-height: 1.2;
       }
 
       .section-title .highlight {
-        color: var(--primary);
+        color: var(--link-color);
       }
 
       .section-subtitle {
@@ -435,118 +473,227 @@
 
       .features-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0;
+        max-width: 900px;
+        margin: 0 auto;
       }
 
-      .feature-card {
-        background-color: var(--bg-light);
-        padding: 32px;
-        border-radius: 16px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: 1px solid var(--border-color);
+      .feature-item {
         display: flex;
-        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        padding: 40px 32px;
+        border-bottom: 1px solid var(--border-color);
+        transition: var(--transition);
         animation: fadeInUp 0.8s ease-out backwards;
       }
 
-      .feature-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      .feature-item:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .feature-item:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .feature-item:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .feature-item:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .feature-item:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+      .feature-item:nth-child(6) {
+        animation-delay: 0.6s;
+      }
+      .feature-item:nth-child(7) {
+        animation-delay: 0.7s;
+      }
+      .feature-item:nth-child(8) {
+        animation-delay: 0.8s;
+      }
+
+      .feature-item:nth-child(odd) {
+        border-right: 1px solid var(--border-color);
+      }
+
+      .feature-item:nth-last-child(-n + 2) {
+        border-bottom: none;
+      }
+
+      .feature-item:hover {
+        background-color: rgba(139, 139, 255, 0.03);
       }
 
       .feature-icon {
-        font-size: 1.5em;
-        color: var(--primary);
-        margin-bottom: 24px;
-        width: 64px;
-        height: 64px;
-        background-color: rgba(99, 102, 241, 0.08);
-        border-radius: 16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        align-self: flex-start;
+        font-size: 2em;
+        line-height: 1;
+        flex-shrink: 0;
+        margin-top: 4px;
+        filter: grayscale(0.3);
+        transition: var(--transition);
       }
 
-      .feature-icon svg {
-        width: 28px;
-        height: 28px;
-        fill: var(--primary);
+      .feature-item:hover .feature-icon {
+        filter: grayscale(0);
       }
 
-      .feature-card h3 {
-        font-size: 1.35em;
-        margin-bottom: 12px;
+      .feature-content {
+        flex: 1;
+      }
+
+      .feature-content h3 {
+        font-size: 1.25em;
+        margin-bottom: 8px;
         color: var(--text-primary);
-        font-weight: 400;
+        font-weight: 500;
         letter-spacing: -0.01em;
+        line-height: 1.3;
       }
 
-      .feature-card p {
+      .feature-content p {
         color: var(--text-secondary);
         font-size: 0.95em;
-        flex-grow: 1;
-        font-weight: 300;
+        font-weight: 400;
         line-height: 1.6;
+        margin: 0;
+      }
+
+      @media (max-width: 768px) {
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .feature-item:nth-child(odd) {
+          border-right: none;
+        }
+
+        .feature-item {
+          border-bottom: 1px solid var(--border-color);
+          padding: 32px 24px;
+        }
+
+        .feature-item:nth-last-child(1) {
+          border-bottom: none;
+        }
       }
 
       .how-it-works {
         padding: 100px 0;
-        background-color: var(--bg-light);
+        background-color: var(--bg-primary);
       }
 
       .steps-container {
-        display: flex;
-        justify-content: space-around;
-        align-items: flex-start;
-        gap: 30px;
-        margin-top: 50px;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        max-width: 1000px;
+        margin: 60px auto 0;
+        border-top: 1px solid var(--border-color);
+        border-left: 1px solid var(--border-color);
       }
 
       .step {
-        flex: 1;
-        min-width: 250px;
-        text-align: center;
-        padding: 20px;
+        padding: 48px 40px;
+        border-right: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        transition: var(--transition);
+        animation: fadeInUp 0.8s ease-out backwards;
+      }
+
+      .step:hover {
+        background-color: rgba(139, 139, 255, 0.03);
       }
 
       .step-number {
-        width: 56px;
-        height: 56px;
-        background-color: var(--primary);
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-hover)
+        );
         color: white;
-        border-radius: 50%;
-        display: flex;
+        border-radius: 12px;
+        display: inline-flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.5em;
-        font-weight: 400;
-        margin: 0 auto 24px auto;
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        font-size: 1.25em;
+        font-weight: 600;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 12px rgba(139, 139, 255, 0.2);
         animation: scaleIn 0.8s ease-out backwards;
       }
 
+      .step:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .step:nth-child(1) .step-number {
+        animation-delay: 0.2s;
+      }
+      .step:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .step:nth-child(2) .step-number {
+        animation-delay: 0.3s;
+      }
+      .step:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .step:nth-child(3) .step-number {
+        animation-delay: 0.4s;
+      }
+
       .step h4 {
-        font-size: 1.3em;
-        margin-bottom: 12px;
+        font-size: 1.4em;
+        margin-bottom: 16px;
         color: var(--text-primary);
-        font-weight: 400;
+        font-weight: 500;
         letter-spacing: -0.01em;
+        line-height: 1.3;
       }
 
       .step p {
         color: var(--text-secondary);
         font-size: 0.95em;
-        font-weight: 300;
-        line-height: 1.6;
+        font-weight: 400;
+        line-height: 1.7;
+        margin: 0;
+      }
+
+      .step a {
+        color: var(--link-color);
+        text-decoration: none;
+        transition: var(--transition);
+        border-bottom: 1px solid transparent;
+      }
+
+      .step a:hover {
+        color: var(--link-hover);
+        border-bottom-color: var(--link-hover);
+      }
+
+      @media (max-width: 768px) {
+        .steps-container {
+          grid-template-columns: 1fr;
+          border-left: none;
+        }
+
+        .step {
+          border-right: none;
+          border-left: none;
+          padding: 40px 24px;
+        }
+
+        .step:not(:last-child) {
+          border-bottom: 1px solid var(--border-color);
+        }
       }
 
       .showcase {
         padding: 100px 0;
-        background-color: var(--bg-dark);
+        background-color: var(--bg-primary);
       }
 
       .showcase-gallery {
@@ -561,20 +708,20 @@
       }
 
       .screenshot-item {
-        background-color: var(--bg-light);
+        background-color: var(--bg-secondary);
         border: 1px solid var(--border-color);
-        border-radius: 16px;
+        border-radius: var(--border-radius);
         overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: var(--card-shadow);
+        transition: var(--transition);
         cursor: pointer;
         width: 100%;
         max-width: 500px;
       }
 
       .screenshot-item:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        border-color: rgba(139, 139, 255, 0.2);
       }
 
       .screenshot-item:last-child {
@@ -583,8 +730,7 @@
 
       .screenshot-placeholder {
         width: 100%;
-        aspect-ratio: 16/10;
-        background-color: var(--bg-light);
+        background-color: var(--bg-secondary);
         overflow: hidden;
         position: relative;
         display: flex;
@@ -594,18 +740,8 @@
 
       .screenshot-placeholder img {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
+        height: auto;
         display: block;
-        transition: transform 0.3s ease;
-      }
-
-      .screenshot-item:first-child .screenshot-placeholder img {
-        object-position: bottom;
-      }
-
-      .screenshot-item:hover .screenshot-placeholder img {
-        transform: scale(1.05);
       }
 
       .screenshot-caption {
@@ -613,9 +749,9 @@
         color: var(--text-secondary);
         font-size: 0.95em;
         text-align: left;
-        background-color: white;
+        background-color: var(--bg-secondary);
         border-top: 1px solid var(--border-color);
-        font-weight: 300;
+        font-weight: 400;
         line-height: 1.6;
       }
 
@@ -624,7 +760,7 @@
         display: block;
         margin-bottom: 8px;
         font-size: 1.1em;
-        font-weight: 400;
+        font-weight: 500;
         letter-spacing: -0.01em;
       }
 
@@ -689,11 +825,12 @@
         justify-content: center;
         transition: all 0.3s ease;
         z-index: 1001;
+        line-height: 1;
+        padding: 0;
       }
 
       .modal-close:hover {
         background-color: rgba(255, 255, 255, 0.2);
-        transform: scale(1.1);
       }
 
       .modal-caption {
@@ -762,7 +899,7 @@
 
       .testimonials {
         padding: 100px 0;
-        background-color: var(--bg-light);
+        background-color: var(--bg-secondary);
       }
 
       .testimonial-grid {
@@ -772,11 +909,11 @@
       }
 
       .testimonial-card {
-        background-color: var(--bg-dark);
+        background-color: var(--bg-primary);
         padding: 32px;
-        border-radius: 16px;
+        border-radius: var(--border-radius);
         border: 1px solid var(--border-color);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        box-shadow: var(--card-shadow);
       }
 
       .testimonial-card blockquote {
@@ -785,7 +922,7 @@
         margin-bottom: 20px;
         position: relative;
         padding-left: 20px;
-        font-weight: 300;
+        font-weight: 400;
         line-height: 1.6;
       }
 
@@ -821,7 +958,7 @@
         color: var(--text-primary);
         font-size: 1.1em;
         margin: 0;
-        font-weight: 400;
+        font-weight: 500;
         letter-spacing: -0.01em;
       }
 
@@ -829,30 +966,26 @@
         color: var(--text-secondary);
         font-size: 0.9em;
         margin: 0;
-        font-weight: 300;
+        font-weight: 400;
       }
 
       .final-cta {
         padding: 100px 0;
         text-align: center;
-        background: linear-gradient(
-          0deg,
-          var(--bg-dark) 0%,
-          var(--bg-light) 100%
-        );
+        background-color: var(--bg-primary);
       }
 
       .final-cta h2 {
         font-size: 3em;
         margin-bottom: 24px;
         color: var(--text-primary);
-        font-weight: 300;
+        font-weight: 600;
         letter-spacing: -0.02em;
         line-height: 1.2;
       }
 
       .final-cta h2 .highlight {
-        color: var(--primary);
+        color: var(--link-color);
       }
 
       .final-cta p {
@@ -860,18 +993,18 @@
         color: var(--text-secondary);
         max-width: 600px;
         margin: 0 auto 40px auto;
-        font-weight: 300;
+        font-weight: 400;
         letter-spacing: -0.01em;
         line-height: 1.6;
       }
 
       footer {
-        background-color: var(--bg-dark);
+        background-color: var(--bg-primary);
         color: var(--text-secondary);
         text-align: center;
         padding: 50px 0;
         border-top: 1px solid var(--border-color);
-        font-weight: 300;
+        font-weight: 400;
       }
 
       footer p {
@@ -892,7 +1025,7 @@
         justify-content: center;
         color: var(--text-secondary);
         text-decoration: none;
-        transition: color 0.3s ease;
+        transition: var(--transition);
         padding: 5px 0;
         margin: 0 15px;
       }
@@ -903,20 +1036,26 @@
       }
 
       .footer-links a:hover {
-        color: var(--primary);
+        color: var(--link-hover);
       }
 
       @media (max-width: 480px) {
+        .hero {
+          padding: 100px 0 80px;
+        }
         .hero h1 {
-          font-size: 2.2em;
-          letter-spacing: -0.02em;
+          font-size: 2.5em;
+          letter-spacing: -0.03em;
+          margin-bottom: 24px;
         }
         .hero p.subtitle {
-          font-size: 1.05em;
+          font-size: 1.1em;
+          margin-bottom: 40px;
         }
         .hero-screenshot-placeholder {
           width: 95%;
-          margin: 20px auto 0;
+          margin: 40px auto 0;
+          max-width: 100%;
         }
 
         .features-grid {
@@ -987,19 +1126,19 @@
         display: flex;
         align-items: center;
         color: var(--text-secondary);
-        transition: color 0.3s ease;
+        transition: var(--transition);
       }
 
       .github-link:hover {
-        color: var(--primary);
+        color: var(--link-hover);
       }
 
       .github-link svg {
-        transition: fill 0.3s ease;
+        transition: var(--transition);
       }
 
       .github-link:hover svg {
-        fill: var(--primary);
+        fill: var(--link-hover);
       }
 
       @media (max-width: 768px) {
@@ -1037,7 +1176,7 @@
         </button>
         <div class="nav-menu" id="nav-menu">
           <ul>
-            <li><a href="#features" class="active">Features</a></li>
+            <li><a href="#features">Features</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
             <li><a href="#showcase">Showcase</a></li>
             <li>
@@ -1076,12 +1215,12 @@
         <div class="container">
           <h1>
             Search Smarter, Not Harder with
-            <span class="highlight">Magellan.</span>
+            <span style="color: var(--text-primary)">Magellan.</span>
           </h1>
           <p class="subtitle">
-            Your free AI-powered page navigator that understands context and
-            meaning. Ask questions naturally and get precise answers from any
-            webpage instantly, with smart citations and multiple search modes.
+            Transform your browser into an intelligent research tool. Ask
+            questions about any webpage or document and receive instant, cited
+            answers with conversational AI.
           </p>
           <a
             href="https://chromewebstore.google.com/detail/magellan/ekkajebdacenikgmbgkdnmememnlibnd?authuser=0&hl=en"
@@ -1105,7 +1244,7 @@
               loop
               playsinline
               preload="metadata"
-              poster="./public/hero.png"
+              poster="./public/code.png"
               width="100%"
               height="100%"
               aria-label="Magellan demo video"
@@ -1116,81 +1255,93 @@
 
       <section id="features" class="features">
         <div class="container">
-          <h2 class="section-title">
-            What makes <span class="highlight">Magellan</span> magical? 🔍
-          </h2>
+          <h2 class="section-title">Your AI Superpower</h2>
           <p class="section-subtitle">
-            Magellan is an open-source Chrome extension that brings
-            conversational AI to your web browsing experience. Ask questions
-            about any webpage or PDF and get AI-powered answers with smart
-            citations and visual highlights.
+            Magellan transforms your browser into an intelligent research and
+            analysis tool. Free, open-source, and privacy-focused.
           </p>
           <div class="features-grid">
-            <div class="feature-card">
+            <div class="feature-item">
               <div class="feature-icon">🧠</div>
-              <h3>AI-Powered Search</h3>
-              <p>Ask questions about any webpage and get instant answers.</p>
+              <div class="feature-content">
+                <h3>Intelligent Search Modes</h3>
+                <p>
+                  Choose from Page Context, Blended, or General Knowledge modes
+                  to get answers exactly how you need them.
+                </p>
+              </div>
             </div>
-            <div class="feature-card">
-              <div class="feature-icon">🔎</div>
-              <h3>Multiple Search Modes</h3>
-              <ul style="list-style: none; margin-top: 8px; padding-left: 0">
-                <li>
-                  <b>Page Context</b>: Search only within the current page
-                  content
-                </li>
-                <li>
-                  <b>Blended</b>: Search page first, then use general knowledge
-                  if needed
-                </li>
-                <li>
-                  <b>General Knowledge</b>: Use only general knowledge, ignore
-                  page content
-                </li>
-              </ul>
-            </div>
-            <div class="feature-card">
+            <div class="feature-item">
               <div class="feature-icon">📄</div>
-              <h3>Document Upload</h3>
-              <p>
-                Upload PDF files for analysis.<br /><b>Smart Context:</b> Uses
-                uploaded PDFs as page context for searches.
-              </p>
+              <div class="feature-content">
+                <h3>Document Analysis</h3>
+                <p>
+                  Upload PDF, TXT, DOC, DOCX, MD, and RTF files. Ask questions
+                  about document content with full context awareness.
+                </p>
+              </div>
             </div>
-            <div class="feature-card">
+            <div class="feature-item">
               <div class="feature-icon">📚</div>
-              <h3>Smart Citations</h3>
-              <p>Get direct links to the relevant parts of the page.</p>
+              <div class="feature-content">
+                <h3>Smart Citations & Highlights</h3>
+                <p>
+                  Automatic citations with visual highlights on the page.
+                  Navigate between sources and jump directly to relevant
+                  sections.
+                </p>
+              </div>
             </div>
-            <div class="feature-card">
-              <div class="feature-icon">🎯</div>
-              <h3>Visual Highlights</h3>
-              <p>
-                See exactly where the information comes from with highlighted
-                text.
-              </p>
+            <div class="feature-item">
+              <div class="feature-icon">🔄</div>
+              <div class="feature-content">
+                <h3>Real-time Web Search</h3>
+                <p>
+                  Optional real-time web search for current events and
+                  up-to-date information. Toggle on/off as needed.
+                </p>
+              </div>
             </div>
-            <div class="feature-card">
+            <div class="feature-item">
+              <div class="feature-icon">🤖</div>
+              <div class="feature-content">
+                <h3>Flexible AI Models</h3>
+                <p>
+                  Choose from hundreds of AI models via OpenRouter. Switch
+                  between models optimized for speed, accuracy, or specific
+                  capabilities.
+                </p>
+              </div>
+            </div>
+            <div class="feature-item">
               <div class="feature-icon">💬</div>
-              <h3>Conversation History</h3>
-              <p>Keep track of your questions and answers.</p>
+              <div class="feature-content">
+                <h3>Persistent Chat History</h3>
+                <p>
+                  Conversation history saved per browser tab. Each tab maintains
+                  its own separate chat context.
+                </p>
+              </div>
             </div>
-            <div class="feature-card">
+            <div class="feature-item">
               <div class="feature-icon">🎨</div>
-              <h3>Theme Support</h3>
-              <p>
-                Choose between light and dark themes, or sync with your system.
-              </p>
+              <div class="feature-content">
+                <h3>Customizable Interface</h3>
+                <p>
+                  Light and dark themes with system sync. Collapsible input
+                  section for maximum screen space.
+                </p>
+              </div>
             </div>
-            <div class="feature-card">
-              <div class="feature-icon">🧼</div>
-              <h3>Sleek, Responsive UI</h3>
-              <p>Clean design that fits right into your browser workflow.</p>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">💸</div>
-              <h3>100% Free</h3>
-              <p>No subscriptions, no paywalls, no data harvesting.</p>
+            <div class="feature-item">
+              <div class="feature-icon">🔒</div>
+              <div class="feature-content">
+                <h3>Privacy-Focused</h3>
+                <p>
+                  100% free and open-source. No data harvesting. Your API key
+                  stays local. All processing through your chosen provider.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -1209,12 +1360,12 @@
               <h4>Install Extension</h4>
               <p>
                 Click the "Add to Chrome" button and install Magellan from the
-                Chrome Web Store. Ensure you have a free Gemini API key from
+                Chrome Web Store. Get your API key from
                 <a
-                  href="https://ai.google.dev/gemini-api/docs/api-key"
+                  href="https://openrouter.ai/keys"
                   target="_blank"
-                  style="color: var(--primary); text-decoration: underline"
-                  >Google AI Studio</a
+                  rel="noopener noreferrer"
+                  >OpenRouter</a
                 >.
               </p>
             </div>
@@ -1241,21 +1392,21 @@
         <div class="container">
           <h2 class="section-title">See Magellan In Action</h2>
           <p class="section-subtitle">
-            Experience how Magellan transforms your web browsing with AI-powered
-            conversations and smart citations.
+            See how Magellan transforms research, analysis, and information
+            discovery across web pages and documents.
           </p>
           <div class="showcase-gallery">
             <div class="screenshot-item" data-caption="Natural Conversations">
               <div class="screenshot-placeholder">
                 <img
-                  src="./public/convo.png"
+                  src="./public/code.png"
                   alt="Magellan conversational interface"
                 />
               </div>
               <div class="screenshot-caption">
                 <strong>Natural Conversations</strong>
                 Ask questions in plain English and get intelligent responses
-                powered by Google Gemini.
+                powered by your chosen AI model.
               </div>
             </div>
             <div class="screenshot-item" data-caption="Smart Citations">
@@ -1271,17 +1422,14 @@
                 and source tracking.
               </div>
             </div>
-            <div class="screenshot-item" data-caption="Context-Aware Chat">
+            <div class="screenshot-item" data-caption="Beautiful UI">
               <div class="screenshot-placeholder">
-                <img
-                  src="./public/tabs.png"
-                  alt="Magellan context-aware features"
-                />
+                <img src="./public/light.png" alt="Magellan beautiful UI" />
               </div>
               <div class="screenshot-caption">
-                <strong>Context-Aware Chat</strong>
-                Each tab maintains its own conversation history and memory for
-                relevant responses.
+                <strong>Seamless User Experience</strong>
+                Sleek and clean interface available in both light and dark
+                themes. Collapsible input section for maximum screen space.
               </div>
             </div>
             <div class="screenshot-item" data-caption="Free & Open Source">
@@ -1293,8 +1441,9 @@
               </div>
               <div class="screenshot-caption">
                 <strong>Free & Open Source</strong>
-                No subscriptions, no paywalls. Just get a free Gemini API key
-                and you're ready to go.
+                No subscriptions, no paywalls. Privacy-focused with local API
+                key storage. Works with OpenRouter and your preferred AI
+                provider.
               </div>
             </div>
           </div>
@@ -1306,18 +1455,11 @@
         <div class="modal-content">
           <img src="" alt="" id="modalImage" />
         </div>
-        <div class="modal-caption">
-          <strong id="modalCaption"></strong>
-          <span id="modalDescription"></span>
-        </div>
       </div>
 
       <section class="final-cta">
         <div class="container">
-          <h2>
-            Transform how you explore the web with
-            <span class="highlight">AI-powered search!</span> 🌟
-          </h2>
+          <h2>Transform how you explore the web with AI-powered search.</h2>
           <p>
             Stop struggling with traditional search. Let Magellan understand
             your questions and find exactly what you need, naturally.
@@ -1429,20 +1571,14 @@
 
         const modal = document.getElementById("imageModal");
         const modalImg = document.getElementById("modalImage");
-        const modalCaption = document.getElementById("modalCaption");
-        const modalDescription = document.getElementById("modalDescription");
         const modalClose = document.querySelector(".modal-close");
 
         document.querySelectorAll(".screenshot-item").forEach((item) => {
           item.addEventListener("click", () => {
             const img = item.querySelector("img");
-            const caption = item.querySelector("strong");
-            const description = item.querySelector("p");
 
             modalImg.src = img.src;
             modalImg.alt = img.alt;
-            modalCaption.textContent = caption.textContent;
-            modalDescription.textContent = description.textContent;
 
             modal.classList.add("active");
             document.body.style.overflow = "hidden";
