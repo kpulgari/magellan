@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -42,1114 +42,7 @@
       content="https://kpulgari.com/magellan/public/magellan-logo.png"
     />
 
-    <style>
-      :root {
-        /* Core colors - darker, sexier theme */
-        --primary: #8b8bff;
-        --primary-hover: #6b6bff;
-        --success: #51cf66;
-        --error: #ff6b6b;
-        --warning: #ffd43b;
-        --border-radius: 8px;
-        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-        /* Theme variables - darker, sexier */
-        --bg-primary: #0f0f13;
-        --bg-secondary: #1a1a24;
-        --text-primary: #e8e8f0;
-        --text-secondary: #8b8b9e;
-        --border-color: rgba(255, 255, 255, 0.08);
-        --input-bg: #1a1a24;
-        --input-border: rgba(255, 255, 255, 0.08);
-        --input-focus-border: #8b8bff;
-        --input-focus-ring: rgba(139, 139, 255, 0.15);
-        --button-hover: #6b6bff;
-        --button-active: #5b5bff;
-        --link-color: #8b8bff;
-        --link-hover: #6b6bff;
-        --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-
-        /* Legacy compatibility */
-        --bg-dark: var(--bg-primary);
-        --bg-light: var(--bg-secondary);
-        --primary-dark: var(--primary-hover);
-      }
-
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      .highlight {
-        --highlight-color: hsl(248deg 84% 60%);
-        background-image: url(https://s2.svgbox.net/pen-brushes.svg?ic=brush-1&color=8b8bff);
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        background-blend-mode: multiply;
-        margin: -2px -6px;
-        padding: 2px 6px;
-        -webkit-box-decoration-break: clone;
-        box-decoration-break: clone;
-      }
-
-      body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Helvetica, Arial, sans-serif;
-        background-color: var(--bg-primary);
-        color: var(--text-primary);
-        line-height: 1.7;
-        font-size: 16px;
-        overflow-x: hidden;
-        font-weight: 400;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-
-      .container {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-
-      header {
-        background-color: rgba(15, 15, 19, 0.8);
-        backdrop-filter: blur(20px);
-        padding: 20px 0;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        border-bottom: 1px solid var(--border-color);
-      }
-
-      nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .logo {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        font-size: 1.5em;
-        font-weight: 300;
-        color: var(--text-primary);
-        letter-spacing: -0.02em;
-      }
-
-      .logo img {
-        height: 40px;
-        margin-right: 10px;
-      }
-
-      .logo span {
-        color: var(--primary);
-      }
-
-      .nav-menu {
-        display: flex;
-        align-items: center;
-      }
-
-      .nav-menu ul {
-        list-style: none;
-        display: flex;
-        align-items: center;
-      }
-
-      .nav-menu ul li {
-        margin-left: 25px;
-      }
-
-      .nav-menu ul li a {
-        text-decoration: none;
-        color: var(--text-secondary);
-        font-weight: 300;
-        transition: color 0.3s ease;
-        position: relative;
-        letter-spacing: -0.01em;
-      }
-
-      .nav-menu ul li a:hover,
-      .nav-menu ul li a.active {
-        color: var(--link-hover);
-      }
-
-      .nav-menu ul li a.github-link::after {
-        display: none;
-      }
-
-      .nav-menu .cta-button-nav {
-        background: transparent;
-        color: var(--text-primary);
-        padding: 8px 20px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 0.95em;
-        transition: var(--transition);
-        margin-left: 25px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        letter-spacing: -0.01em;
-        border: 1px solid var(--border-color);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .nav-menu .cta-button-nav::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(139, 139, 255, 0.1);
-        opacity: 0;
-        transition: var(--transition);
-        z-index: -1;
-      }
-
-      .nav-menu .cta-button-nav:hover {
-        color: var(--text-primary);
-        border-color: rgba(139, 139, 255, 0.3);
-      }
-
-      .nav-menu .cta-button-nav:hover::before {
-        opacity: 1;
-      }
-
-      .hamburger-menu {
-        display: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        width: 40px;
-        height: 40px;
-        z-index: 1001;
-        position: relative;
-      }
-
-      .hamburger-icon {
-        display: block;
-        width: 22px;
-        height: 2px;
-        background-color: var(--text-primary);
-        margin: 4px auto;
-        transition: all 0.3s ease-in-out;
-        border-radius: 1px;
-      }
-
-      @media (max-width: 768px) {
-        .hamburger-menu {
-          display: block;
-        }
-
-        .nav-menu {
-          position: fixed;
-          top: 0;
-          right: -100%;
-          width: 100%;
-          height: 100vh;
-          background-color: var(--bg-primary);
-          padding: 80px 20px 20px;
-          transition: right 0.3s ease-in-out;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .nav-menu.nav-open {
-          right: 0;
-        }
-
-        .nav-menu ul {
-          flex-direction: column;
-          width: 100%;
-          margin-bottom: 20px;
-        }
-
-        .nav-menu ul li {
-          margin: 15px 0;
-          width: 100%;
-        }
-
-        .nav-menu ul li a {
-          display: block;
-          padding: 10px 0;
-          font-size: 1.2em;
-        }
-
-        .nav-menu .cta-button-nav {
-          width: 100%;
-          text-align: center;
-          justify-content: center;
-          margin: 10px 0;
-        }
-
-        .hamburger-menu.active .hamburger-icon:nth-child(1) {
-          transform: translateY(6px) rotate(45deg);
-        }
-
-        .hamburger-menu.active .hamburger-icon:nth-child(2) {
-          opacity: 0;
-        }
-
-        .hamburger-menu.active .hamburger-icon:nth-child(3) {
-          transform: translateY(-6px) rotate(-45deg);
-        }
-
-        body.menu-open {
-          overflow: hidden;
-        }
-      }
-
-      .hero {
-        padding: 100px 0 120px;
-        text-align: center;
-        background-color: var(--bg-primary);
-        position: relative;
-      }
-
-      .hero h1 {
-        font-size: 4em;
-        margin-bottom: 32px;
-        color: var(--text-primary);
-        line-height: 1.1;
-        animation: fadeInUp 0.8s ease-out;
-        font-weight: 700;
-        letter-spacing: -0.04em;
-        position: relative;
-        z-index: 1;
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .hero h1 .highlight {
-        color: var(--link-color);
-      }
-
-      .hero p.subtitle {
-        font-size: 1.35em;
-        color: var(--text-secondary);
-        max-width: 700px;
-        margin: 0 auto 48px auto;
-        animation: fadeInUp 0.8s ease-out 0.2s backwards;
-        font-weight: 400;
-        letter-spacing: -0.015em;
-        line-height: 1.7;
-        position: relative;
-        z-index: 1;
-      }
-
-      .chrome-store-badge-container {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-      }
-
-      .chrome-store-badge-img {
-        display: block;
-        margin: 0 auto;
-        width: 100%;
-        max-width: 206px;
-        height: auto;
-        transition: transform 0.2s ease-in-out;
-        animation: fadeInUp 0.8s ease-out 0.3s backwards;
-      }
-
-      .hero-screenshot-placeholder {
-        width: 100%;
-        max-width: 1200px;
-        margin: 60px auto 0;
-        border-radius: 24px;
-        overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
-          0 0 0 1px var(--border-color);
-        animation: scaleIn 1s ease-out 0.6s backwards,
-          subtlePulse 3s ease-in-out infinite;
-        transition: var(--transition);
-        position: relative;
-        cursor: pointer;
-        aspect-ratio: 16/9;
-        z-index: 1;
-      }
-
-      .hero-screenshot-placeholder:hover {
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--primary);
-      }
-
-      .hero-screenshot-placeholder::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(
-          to bottom,
-          rgba(139, 139, 255, 0.1),
-          rgba(139, 139, 255, 0)
-        );
-        opacity: 0;
-        transition: opacity 0.4s ease;
-        pointer-events: none;
-      }
-
-      .hero-screenshot-placeholder:hover::after {
-        opacity: 1;
-      }
-
-      .hero-screenshot-placeholder video {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .hero-screenshot-placeholder img {
-        width: 100%;
-        height: auto;
-        display: block;
-        border-radius: 20px;
-        object-fit: contain;
-      }
-
-      @keyframes subtlePulse {
-        0% {
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
-            0 0 0 1px var(--border-color);
-        }
-        50% {
-          box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45),
-            0 0 0 1px var(--border-color);
-        }
-        100% {
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
-            0 0 0 1px var(--border-color);
-        }
-      }
-
-      .features {
-        padding: 100px 0;
-        background-color: var(--bg-primary);
-      }
-
-      .section-title {
-        text-align: center;
-        font-size: 2.75em;
-        margin-bottom: 16px;
-        color: var(--text-primary);
-        font-weight: 600;
-        letter-spacing: -0.02em;
-        line-height: 1.2;
-      }
-
-      .section-title .highlight {
-        color: var(--link-color);
-      }
-
-      .section-subtitle {
-        text-align: center;
-        font-size: 1.1em;
-        color: var(--text-secondary);
-        margin-bottom: 60px;
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
-        font-weight: 300;
-        letter-spacing: -0.01em;
-        line-height: 1.6;
-      }
-
-      .features-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0;
-        max-width: 900px;
-        margin: 0 auto;
-      }
-
-      .feature-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 24px;
-        padding: 40px 32px;
-        border-bottom: 1px solid var(--border-color);
-        transition: var(--transition);
-        animation: fadeInUp 0.8s ease-out backwards;
-      }
-
-      .feature-item:nth-child(1) {
-        animation-delay: 0.1s;
-      }
-      .feature-item:nth-child(2) {
-        animation-delay: 0.2s;
-      }
-      .feature-item:nth-child(3) {
-        animation-delay: 0.3s;
-      }
-      .feature-item:nth-child(4) {
-        animation-delay: 0.4s;
-      }
-      .feature-item:nth-child(5) {
-        animation-delay: 0.5s;
-      }
-      .feature-item:nth-child(6) {
-        animation-delay: 0.6s;
-      }
-      .feature-item:nth-child(7) {
-        animation-delay: 0.7s;
-      }
-      .feature-item:nth-child(8) {
-        animation-delay: 0.8s;
-      }
-
-      .feature-item:nth-child(odd) {
-        border-right: 1px solid var(--border-color);
-      }
-
-      .feature-item:nth-last-child(-n + 2) {
-        border-bottom: none;
-      }
-
-      .feature-item:hover {
-        background-color: rgba(139, 139, 255, 0.03);
-      }
-
-      .feature-icon {
-        font-size: 2em;
-        line-height: 1;
-        flex-shrink: 0;
-        margin-top: 4px;
-        filter: grayscale(0.3);
-        transition: var(--transition);
-      }
-
-      .feature-item:hover .feature-icon {
-        filter: grayscale(0);
-      }
-
-      .feature-content {
-        flex: 1;
-      }
-
-      .feature-content h3 {
-        font-size: 1.25em;
-        margin-bottom: 8px;
-        color: var(--text-primary);
-        font-weight: 500;
-        letter-spacing: -0.01em;
-        line-height: 1.3;
-      }
-
-      .feature-content p {
-        color: var(--text-secondary);
-        font-size: 0.95em;
-        font-weight: 400;
-        line-height: 1.6;
-        margin: 0;
-      }
-
-      @media (max-width: 768px) {
-        .features-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .feature-item:nth-child(odd) {
-          border-right: none;
-        }
-
-        .feature-item {
-          border-bottom: 1px solid var(--border-color);
-          padding: 32px 24px;
-        }
-
-        .feature-item:nth-last-child(1) {
-          border-bottom: none;
-        }
-      }
-
-      .how-it-works {
-        padding: 100px 0;
-        background-color: var(--bg-primary);
-      }
-
-      .steps-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0;
-        max-width: 1000px;
-        margin: 60px auto 0;
-        border-top: 1px solid var(--border-color);
-        border-left: 1px solid var(--border-color);
-      }
-
-      .step {
-        padding: 48px 40px;
-        border-right: 1px solid var(--border-color);
-        border-bottom: 1px solid var(--border-color);
-        transition: var(--transition);
-        animation: fadeInUp 0.8s ease-out backwards;
-      }
-
-      .step:hover {
-        background-color: rgba(139, 139, 255, 0.03);
-      }
-
-      .step-number {
-        width: 48px;
-        height: 48px;
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--primary-hover)
-        );
-        color: white;
-        border-radius: 12px;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.25em;
-        font-weight: 600;
-        margin-bottom: 24px;
-        box-shadow: 0 4px 12px rgba(139, 139, 255, 0.2);
-        animation: scaleIn 0.8s ease-out backwards;
-      }
-
-      .step:nth-child(1) {
-        animation-delay: 0.1s;
-      }
-      .step:nth-child(1) .step-number {
-        animation-delay: 0.2s;
-      }
-      .step:nth-child(2) {
-        animation-delay: 0.2s;
-      }
-      .step:nth-child(2) .step-number {
-        animation-delay: 0.3s;
-      }
-      .step:nth-child(3) {
-        animation-delay: 0.3s;
-      }
-      .step:nth-child(3) .step-number {
-        animation-delay: 0.4s;
-      }
-
-      .step h4 {
-        font-size: 1.4em;
-        margin-bottom: 16px;
-        color: var(--text-primary);
-        font-weight: 500;
-        letter-spacing: -0.01em;
-        line-height: 1.3;
-      }
-
-      .step p {
-        color: var(--text-secondary);
-        font-size: 0.95em;
-        font-weight: 400;
-        line-height: 1.7;
-        margin: 0;
-      }
-
-      .step a {
-        color: var(--link-color);
-        text-decoration: none;
-        transition: var(--transition);
-        border-bottom: 1px solid transparent;
-      }
-
-      .step a:hover {
-        color: var(--link-hover);
-        border-bottom-color: var(--link-hover);
-      }
-
-      @media (max-width: 768px) {
-        .steps-container {
-          grid-template-columns: 1fr;
-          border-left: none;
-        }
-
-        .step {
-          border-right: none;
-          border-left: none;
-          padding: 40px 24px;
-        }
-
-        .step:not(:last-child) {
-          border-bottom: 1px solid var(--border-color);
-        }
-      }
-
-      .showcase {
-        padding: 100px 0;
-        background-color: var(--bg-primary);
-      }
-
-      .showcase-gallery {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 40px;
-        margin-top: 40px;
-        justify-items: center;
-        max-width: 1100px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .screenshot-item {
-        background-color: var(--bg-secondary);
-        border: 1px solid var(--border-color);
-        border-radius: var(--border-radius);
-        overflow: hidden;
-        box-shadow: var(--card-shadow);
-        transition: var(--transition);
-        cursor: pointer;
-        width: 100%;
-        max-width: 500px;
-      }
-
-      .screenshot-item:hover {
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-        border-color: rgba(139, 139, 255, 0.2);
-      }
-
-      .screenshot-item:last-child {
-        grid-column: auto;
-      }
-
-      .screenshot-placeholder {
-        width: 100%;
-        background-color: var(--bg-secondary);
-        overflow: hidden;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .screenshot-placeholder img {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-
-      .screenshot-caption {
-        padding: 24px;
-        color: var(--text-secondary);
-        font-size: 0.95em;
-        text-align: left;
-        background-color: var(--bg-secondary);
-        border-top: 1px solid var(--border-color);
-        font-weight: 400;
-        line-height: 1.6;
-      }
-
-      .screenshot-caption strong {
-        color: var(--text-primary);
-        display: block;
-        margin-bottom: 8px;
-        font-size: 1.1em;
-        font-weight: 500;
-        letter-spacing: -0.01em;
-      }
-
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.95);
-        z-index: 1000;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .modal.active {
-        display: flex;
-        opacity: 1;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .modal-content {
-        max-width: 90%;
-        max-height: 90vh;
-        position: relative;
-        background-color: transparent;
-        border-radius: 8px;
-        overflow: hidden;
-        transform: scale(0.95);
-        transition: transform 0.3s ease;
-      }
-
-      .modal.active .modal-content {
-        transform: scale(1);
-      }
-
-      .modal-content img {
-        width: 100%;
-        height: auto;
-        max-height: 85vh;
-        display: block;
-        object-fit: contain;
-        border-radius: 8px;
-      }
-
-      .modal-close {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border: none;
-        border-radius: 50%;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        z-index: 1001;
-        line-height: 1;
-        padding: 0;
-      }
-
-      .modal-close:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-      }
-
-      .modal-caption {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 30px;
-        background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
-        color: white;
-        text-align: center;
-        z-index: 1001;
-      }
-
-      .modal-caption strong {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 1.4em;
-        font-weight: 600;
-      }
-
-      .modal-caption span {
-        font-size: 1.1em;
-        opacity: 0.9;
-      }
-
-      @media (max-width: 1024px) {
-        .showcase-gallery {
-          grid-template-columns: repeat(2, 1fr);
-          gap: 30px;
-          padding: 0 20px;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .showcase-gallery {
-          grid-template-columns: 1fr;
-          gap: 30px;
-        }
-        .screenshot-item {
-          max-width: 100%;
-        }
-        .screenshot-placeholder {
-          aspect-ratio: 16/9;
-        }
-        .modal-content {
-          max-width: 95%;
-        }
-        .modal-caption {
-          padding: 20px;
-        }
-        .modal-caption strong {
-          font-size: 1.2em;
-        }
-        .modal-caption span {
-          font-size: 1em;
-        }
-        .modal-close {
-          top: 15px;
-          right: 15px;
-          width: 35px;
-          height: 35px;
-          font-size: 20px;
-        }
-      }
-
-      .testimonials {
-        padding: 100px 0;
-        background-color: var(--bg-secondary);
-      }
-
-      .testimonial-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-      }
-
-      .testimonial-card {
-        background-color: var(--bg-primary);
-        padding: 32px;
-        border-radius: var(--border-radius);
-        border: 1px solid var(--border-color);
-        box-shadow: var(--card-shadow);
-      }
-
-      .testimonial-card blockquote {
-        font-style: italic;
-        color: var(--text-secondary);
-        margin-bottom: 20px;
-        position: relative;
-        padding-left: 20px;
-        font-weight: 400;
-        line-height: 1.6;
-      }
-
-      .testimonial-card blockquote::before {
-        content: "";
-        position: absolute;
-        left: -5px;
-        top: -10px;
-        font-size: 3em;
-        color: var(--primary);
-        opacity: 0.5;
-      }
-
-      .testimonial-author {
-        display: flex;
-        align-items: center;
-      }
-
-      .author-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-color: var(--primary);
-        margin-right: 15px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: var(--text-primary);
-        font-weight: bold;
-      }
-
-      .author-info h5 {
-        color: var(--text-primary);
-        font-size: 1.1em;
-        margin: 0;
-        font-weight: 500;
-        letter-spacing: -0.01em;
-      }
-
-      .author-info p {
-        color: var(--text-secondary);
-        font-size: 0.9em;
-        margin: 0;
-        font-weight: 400;
-      }
-
-      .final-cta {
-        padding: 100px 0;
-        text-align: center;
-        background-color: var(--bg-primary);
-      }
-
-      .final-cta h2 {
-        font-size: 3em;
-        margin-bottom: 24px;
-        color: var(--text-primary);
-        font-weight: 600;
-        letter-spacing: -0.02em;
-        line-height: 1.2;
-      }
-
-      .final-cta h2 .highlight {
-        color: var(--link-color);
-      }
-
-      .final-cta p {
-        font-size: 1.2em;
-        color: var(--text-secondary);
-        max-width: 600px;
-        margin: 0 auto 40px auto;
-        font-weight: 400;
-        letter-spacing: -0.01em;
-        line-height: 1.6;
-      }
-
-      footer {
-        background-color: var(--bg-primary);
-        color: var(--text-secondary);
-        text-align: center;
-        padding: 50px 0;
-        border-top: 1px solid var(--border-color);
-        font-weight: 400;
-      }
-
-      footer p {
-        margin-bottom: 20px;
-      }
-
-      .footer-links {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 20px;
-      }
-
-      .footer-links a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text-secondary);
-        text-decoration: none;
-        transition: var(--transition);
-        padding: 5px 0;
-        margin: 0 15px;
-      }
-
-      .footer-links a svg {
-        margin-right: 6px;
-        vertical-align: middle;
-      }
-
-      .footer-links a:hover {
-        color: var(--link-hover);
-      }
-
-      @media (max-width: 480px) {
-        .hero {
-          padding: 100px 0 80px;
-        }
-        .hero h1 {
-          font-size: 2.5em;
-          letter-spacing: -0.03em;
-          margin-bottom: 24px;
-        }
-        .hero p.subtitle {
-          font-size: 1.1em;
-          margin-bottom: 40px;
-        }
-        .hero-screenshot-placeholder {
-          width: 95%;
-          margin: 40px auto 0;
-          max-width: 100%;
-        }
-
-        .features-grid {
-          grid-template-columns: 1fr;
-        }
-        .showcase-gallery {
-          grid-template-columns: 1fr;
-        }
-        .testimonial-grid {
-          grid-template-columns: 1fr;
-        }
-        .chrome-store-badge-img {
-          max-width: 180px;
-        }
-        .footer-links {
-          flex-direction: column;
-          gap: 15px;
-        }
-        .footer-links a {
-          margin: 5px 10px;
-        }
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes scaleIn {
-        from {
-          opacity: 0;
-          transform: scale(0.95);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateX(-20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-
-      .step:nth-child(1) .step-number {
-        animation-delay: 0.1s;
-      }
-      .step:nth-child(2) .step-number {
-        animation-delay: 0.2s;
-      }
-      .step:nth-child(3) .step-number {
-        animation-delay: 0.3s;
-      }
-
-      .github-link {
-        display: flex;
-        align-items: center;
-        color: var(--text-secondary);
-        transition: var(--transition);
-      }
-
-      .github-link:hover {
-        color: var(--link-hover);
-      }
-
-      .github-link svg {
-        transition: var(--transition);
-      }
-
-      .github-link:hover svg {
-        fill: var(--link-hover);
-      }
-
-      @media (max-width: 768px) {
-        .github-link {
-          padding: 10px 0;
-        }
-        .footer-links a {
-          margin: 5px 10px;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="./css/magellan.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -1158,11 +51,28 @@
     />
   </head>
   <body>
-    <header>
-      <nav class="container">
-        <a href="#" class="logo">
-          <img src="./public/logo.png" alt="Magellan Logo" />
-          Magellan
+    <div class="ambient-root" aria-hidden="true">
+      <div class="ambient-base"></div>
+      <div class="ambient-noise"></div>
+      <div class="ambient-blob ambient-blob--1"></div>
+      <div class="ambient-blob ambient-blob--2"></div>
+      <div class="ambient-blob ambient-blob--3"></div>
+      <div class="ambient-blob ambient-blob--4"></div>
+      <div class="ambient-grid"></div>
+    </div>
+    <header class="site-header">
+      <nav class="container site-nav" aria-label="Primary">
+        <a href="#" class="site-nav__brand">
+          <img
+            class="site-nav__logo"
+            src="./public/logo.png"
+            alt=""
+            width="40"
+            height="40"
+          />
+          <span class="site-nav__brand-text">
+            <span class="site-nav__name text-gradient">Magellan</span>
+          </span>
         </a>
         <button
           class="hamburger-menu"
@@ -1175,15 +85,18 @@
           <span class="hamburger-icon"></span>
         </button>
         <div class="nav-menu" id="nav-menu">
-          <ul>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#how-it-works">How It Works</a></li>
-            <li><a href="#showcase">Showcase</a></li>
+          <ul class="site-nav__links">
+            <li><a class="site-nav__link" href="#features">Features</a></li>
+            <li>
+              <a class="site-nav__link" href="#how-it-works">How it works</a>
+            </li>
+            <li><a class="site-nav__link" href="#showcase">Showcase</a></li>
             <li>
               <a
                 href="https://github.com/magellan-extension/magellan"
                 target="_blank"
-                class="github-link"
+                rel="noopener noreferrer"
+                class="github-link site-nav__link site-nav__link--icon"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1203,6 +116,7 @@
           <a
             href="https://chromewebstore.google.com/detail/magellan/ekkajebdacenikgmbgkdnmememnlibnd?authuser=0&hl=en"
             target="_blank"
+            rel="noopener noreferrer"
             class="cta-button-nav"
             >Add to Chrome</a
           >
@@ -1213,30 +127,35 @@
     <main>
       <section class="hero">
         <div class="container">
-          <h1>
-            Search Smarter, Not Harder with
-            <span style="color: var(--text-primary)">Magellan.</span>
-          </h1>
-          <p class="subtitle">
-            Transform your browser into an intelligent research tool. Ask
-            questions about any webpage or document and receive instant, cited
-            answers with conversational AI.
-          </p>
-          <a
-            href="https://chromewebstore.google.com/detail/magellan/ekkajebdacenikgmbgkdnmememnlibnd?authuser=0&hl=en"
-            target="_blank"
-            aria-label="Get Magellan on the Chrome Web Store"
-            style="display: block; text-decoration: none"
-          >
-            <div class="chrome-store-badge-container">
-              <img
-                src="./public/chrome.png"
-                alt="Available in the Chrome Web Store"
-                class="chrome-store-badge-img"
-              />
-            </div>
-          </a>
-          <div class="hero-screenshot-placeholder">
+          <div class="hero__parallax">
+            <h1 class="hero__title">
+              <span class="text-gradient">Search Smarter, Not Harder with </span
+              ><span class="text-gradient text-gradient--accent"
+                >Magellan.</span
+              >
+            </h1>
+            <p class="subtitle">
+              Transform your browser into an intelligent research tool. Ask
+              questions about any webpage or document and receive instant, cited
+              answers with conversational AI.
+            </p>
+            <a
+              href="https://chromewebstore.google.com/detail/magellan/ekkajebdacenikgmbgkdnmememnlibnd?authuser=0&hl=en"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Get Magellan on the Chrome Web Store"
+              class="chrome-store-link"
+            >
+              <div class="chrome-store-badge-container">
+                <img
+                  src="./public/chrome.png"
+                  alt="Available in the Chrome Web Store"
+                  class="chrome-store-badge-img"
+                />
+              </div>
+            </a>
+          </div>
+          <div class="hero-screenshot-placeholder" data-spotlight>
             <video
               src="./public/demo.mp4"
               autoplay
@@ -1255,23 +174,39 @@
 
       <section id="features" class="features">
         <div class="container">
-          <h2 class="section-title">Your AI Superpower</h2>
-          <p class="section-subtitle">
-            Magellan transforms your browser into an intelligent research and
-            analysis tool. Free, open-source, and privacy-focused.
-          </p>
-          <div class="features-grid">
-            <div class="feature-item">
+          <div class="section-head reveal">
+            <p class="section-label">Product</p>
+            <h2 class="section-title">Your AI Superpower</h2>
+            <p class="section-subtitle">
+              Magellan transforms your browser into an intelligent research and
+              analysis tool. Free, open-source, and privacy-focused.
+            </p>
+          </div>
+          <div class="features-bento">
+            <!-- CHANGE 3: Expanded Intelligent Search Modes description -->
+            <div class="feature-item reveal" data-spotlight>
               <div class="feature-icon">🧠</div>
               <div class="feature-content">
                 <h3>Intelligent Search Modes</h3>
                 <p>
-                  Choose from Page Context, Blended, or General Knowledge modes
-                  to get answers exactly how you need them.
+                  Choose the right context for every question.
+                  <strong style="color: var(--foreground)">Page Context</strong>
+                  grounds the AI exclusively in the current page's text - ideal
+                  for precise lookups and fact-checking against what's actually
+                  on screen.
+                  <strong style="color: var(--foreground)">Blended</strong>
+                  combines page content with the model's broader knowledge,
+                  great for enriching what you're reading with deeper context.
+                  <strong style="color: var(--foreground)"
+                    >General Knowledge</strong
+                  >
+                  ignores the page entirely and draws purely from the AI -
+                  perfect for background research or questions unrelated to the
+                  current content.
                 </p>
               </div>
             </div>
-            <div class="feature-item">
+            <div class="feature-item reveal" data-spotlight>
               <div class="feature-icon">📄</div>
               <div class="feature-content">
                 <h3>Document Analysis</h3>
@@ -1281,7 +216,7 @@
                 </p>
               </div>
             </div>
-            <div class="feature-item">
+            <div class="feature-item reveal" data-spotlight>
               <div class="feature-icon">📚</div>
               <div class="feature-content">
                 <h3>Smart Citations & Highlights</h3>
@@ -1292,7 +227,7 @@
                 </p>
               </div>
             </div>
-            <div class="feature-item">
+            <div class="feature-item reveal" data-spotlight>
               <div class="feature-icon">🔄</div>
               <div class="feature-content">
                 <h3>Real-time Web Search</h3>
@@ -1302,7 +237,7 @@
                 </p>
               </div>
             </div>
-            <div class="feature-item">
+            <div class="feature-item reveal" data-spotlight>
               <div class="feature-icon">🤖</div>
               <div class="feature-content">
                 <h3>Flexible AI Models</h3>
@@ -1313,7 +248,7 @@
                 </p>
               </div>
             </div>
-            <div class="feature-item">
+            <div class="feature-item reveal" data-spotlight>
               <div class="feature-icon">💬</div>
               <div class="feature-content">
                 <h3>Persistent Chat History</h3>
@@ -1323,7 +258,8 @@
                 </p>
               </div>
             </div>
-            <div class="feature-item">
+            <!-- CHANGE 2: Swapped - Seamless User Experience moved here (was position 8, Free & Open Source was here) -->
+            <div class="feature-item reveal" data-spotlight>
               <div class="feature-icon">🎨</div>
               <div class="feature-content">
                 <h3>Customizable Interface</h3>
@@ -1333,7 +269,8 @@
                 </p>
               </div>
             </div>
-            <div class="feature-item">
+            <!-- CHANGE 2: Free & Open Source moved here (was position 7) -->
+            <div class="feature-item reveal" data-spotlight>
               <div class="feature-icon">🔒</div>
               <div class="feature-content">
                 <h3>Privacy-Focused</h3>
@@ -1349,13 +286,16 @@
 
       <section id="how-it-works" class="how-it-works">
         <div class="container">
-          <h2 class="section-title">Get Started in Seconds</h2>
-          <p class="section-subtitle">
-            Using Magellan is incredibly simple. Follow these easy steps to
-            transform your browsing experience.
-          </p>
+          <div class="section-head reveal">
+            <p class="section-label">Workflow</p>
+            <h2 class="section-title">Get Started in Seconds</h2>
+            <p class="section-subtitle">
+              Using Magellan is incredibly simple. Follow these easy steps to
+              transform your browsing experience.
+            </p>
+          </div>
           <div class="steps-container">
-            <div class="step">
+            <div class="step" data-spotlight>
               <div class="step-number">1</div>
               <h4>Install Extension</h4>
               <p>
@@ -1369,7 +309,7 @@
                 >.
               </p>
             </div>
-            <div class="step">
+            <div class="step" data-spotlight>
               <div class="step-number">2</div>
               <h4>Search Intelligently</h4>
               <p>
@@ -1377,7 +317,7 @@
                 Think concepts, not just keywords!
               </p>
             </div>
-            <div class="step">
+            <div class="step" data-spotlight>
               <div class="step-number">3</div>
               <h4>Get Answers</h4>
               <p>
@@ -1390,13 +330,20 @@
 
       <section id="showcase" class="showcase">
         <div class="container">
-          <h2 class="section-title">See Magellan In Action</h2>
-          <p class="section-subtitle">
-            See how Magellan transforms research, analysis, and information
-            discovery across web pages and documents.
-          </p>
+          <div class="section-head reveal">
+            <p class="section-label">Showcase</p>
+            <h2 class="section-title">See Magellan In Action</h2>
+            <p class="section-subtitle">
+              See how Magellan transforms research, analysis, and information
+              discovery across web pages and documents.
+            </p>
+          </div>
           <div class="showcase-gallery">
-            <div class="screenshot-item" data-caption="Natural Conversations">
+            <div
+              class="screenshot-item reveal"
+              data-spotlight
+              data-caption="Natural Conversations"
+            >
               <div class="screenshot-placeholder">
                 <img
                   src="./public/code.png"
@@ -1409,7 +356,11 @@
                 powered by your chosen AI model.
               </div>
             </div>
-            <div class="screenshot-item" data-caption="Smart Citations">
+            <div
+              class="screenshot-item reveal"
+              data-spotlight
+              data-caption="Smart Citations"
+            >
               <div class="screenshot-placeholder">
                 <img
                   src="./public/citations.png"
@@ -1422,17 +373,12 @@
                 and source tracking.
               </div>
             </div>
-            <div class="screenshot-item" data-caption="Beautiful UI">
-              <div class="screenshot-placeholder">
-                <img src="./public/light.png" alt="Magellan beautiful UI" />
-              </div>
-              <div class="screenshot-caption">
-                <strong>Seamless User Experience</strong>
-                Sleek and clean interface available in both light and dark
-                themes. Collapsible input section for maximum screen space.
-              </div>
-            </div>
-            <div class="screenshot-item" data-caption="Free & Open Source">
+            <!-- CHANGE 2: Free & Open Source now in position 3 (was Seamless UX) -->
+            <div
+              class="screenshot-item reveal"
+              data-spotlight
+              data-caption="Free & Open Source"
+            >
               <div class="screenshot-placeholder">
                 <img
                   src="./public/free.png"
@@ -1444,6 +390,21 @@
                 No subscriptions, no paywalls. Privacy-focused with local API
                 key storage. Works with OpenRouter and your preferred AI
                 provider.
+              </div>
+            </div>
+            <!-- CHANGE 2: Seamless UX now in position 4 (was Free & Open Source) -->
+            <div
+              class="screenshot-item reveal"
+              data-spotlight
+              data-caption="Beautiful UI"
+            >
+              <div class="screenshot-placeholder">
+                <img src="./public/light.png" alt="Magellan beautiful UI" />
+              </div>
+              <div class="screenshot-caption">
+                <strong>Seamless User Experience</strong>
+                Sleek and clean interface available in both light and dark
+                themes. Collapsible input section for maximum screen space.
               </div>
             </div>
           </div>
@@ -1458,8 +419,13 @@
       </div>
 
       <section class="final-cta">
-        <div class="container">
-          <h2>Transform how you explore the web with AI-powered search.</h2>
+        <div class="container reveal">
+          <h2 class="final-cta__title">
+            <span class="text-gradient">Transform how you explore the web </span
+            ><span class="text-gradient text-gradient--accent"
+              >with AI-powered search.</span
+            >
+          </h2>
           <p>
             Stop struggling with traditional search. Let Magellan understand
             your questions and find exactly what you need, naturally.
@@ -1467,8 +433,9 @@
           <a
             href="https://chromewebstore.google.com/detail/magellan/ekkajebdacenikgmbgkdnmememnlibnd?authuser=0&hl=en"
             target="_blank"
+            rel="noopener noreferrer"
             aria-label="Get Magellan on the Chrome Web Store"
-            style="display: block; text-decoration: none"
+            class="chrome-store-link"
           >
             <div class="chrome-store-badge-container">
               <img
@@ -1482,36 +449,109 @@
       </section>
     </main>
 
+    <!-- CHANGE 1: Footer refactored to match site theme -->
     <footer>
       <div class="container">
-        <p>© 2025 Magellan. All rights reserved.</p>
-        <div class="footer-links">
-          <a
-            href="https://github.com/magellan-extension/magellan"
-            target="_blank"
+        <div class="footer-brand">
+          <span
+            class="text-gradient"
+            style="font-size: 1rem; font-weight: 600; letter-spacing: -0.02em"
+            >Magellan</span
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              style="vertical-align: middle; margin-right: 4px"
+          <p style="margin: 8px 0 0; font-size: 0.8125rem">
+            Your AI-powered page navigator.
+          </p>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-bottom">
+          <p style="margin: 0; font-size: 0.8rem">
+            © 2026 Magellan. All rights reserved.
+          </p>
+          <div class="footer-links">
+            <a
+              href="https://github.com/magellan-extension/magellan"
+              target="_blank"
             >
-              <path
-                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-              />
-            </svg>
-            GitHub
-          </a>
-          <a href="http://kpulgari.com/magellan/privacy-policy"
-            >Privacy Policy</a
-          >
-          <a href="mailto:magellan.extension@gmail.com">Contact Support</a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                />
+              </svg>
+              GitHub
+            </a>
+            <a href="http://kpulgari.com/magellan/privacy-policy"
+              >Privacy Policy</a
+            >
+            <a href="mailto:magellan.extension@gmail.com">Contact Support</a>
+          </div>
         </div>
       </div>
     </footer>
 
+    <style>
+      /* Footer theme refinements */
+      footer {
+        padding: 48px 0 36px;
+        text-align: left;
+      }
+
+      footer .container {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .footer-brand {
+        margin-bottom: 28px;
+      }
+
+      .footer-divider {
+        height: 1px;
+        background: var(--border-default);
+        margin-bottom: 24px;
+      }
+
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .footer-links {
+        gap: 8px 20px;
+      }
+
+      .footer-links a {
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.6875rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        gap: 6px;
+      }
+
+      .footer-links a:hover {
+        color: var(--foreground);
+      }
+
+      @media (max-width: 600px) {
+        .footer-bottom {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+
+    <script src="./js/magellan.js" defer></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const hamburgerButton = document.querySelector(".hamburger-menu");
